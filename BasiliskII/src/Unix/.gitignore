@@ -17,3 +17,11 @@ cpudefs.cpp
 cpuemu.cpp
 cpustbl.cpp
 cputbl.h
+
+# More emulation files
+compemu.cpp
+compstbl.cpp
+comptbl.h
+
+# Output binaries
+BasiliskII.app
