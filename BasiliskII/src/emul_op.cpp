@@ -50,6 +50,10 @@
 #include "debug.h"
 
 
+// Declared in video_sdl.c
+extern bool lock_screen;
+
+
 /*
  *  Execute EMUL_OP opcode (called by 68k emulator or Illegal Instruction trap handler)
  */
@@ -562,6 +566,16 @@ void EmulOp(uint16 opcode, M68kRegisters *r)
 			if (ReadMacInt32(0x14c) == 0)
 				idle_wait();
 			r->a[0] = ReadMacInt32(0x2b6);
+			break;
+		
+		case M68K_EMUL_OP_VIDEO_UNLOCK:
+			printf("M68K_EMUL_OP_VIDEO_UNLOCK: Unlocking screen\n");
+			lock_screen = false;
+			break;
+		
+		case M68K_EMUL_OP_VIDEO_LOCK:
+			printf("M68K_EMUL_OP_VIDEO_LOCK: Locking screen\n");
+			lock_screen = true;
 			break;
 
 		default:

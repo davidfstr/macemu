@@ -974,6 +974,13 @@ driver_fullscreen::~driver_fullscreen()
 
 
 /*
+ *  Lock screen
+ */
+
+bool lock_screen = true;
+
+
+/*
  *  Initialization
  */
 
@@ -2214,6 +2221,11 @@ static void video_refresh_window_static(void)
 {
 	// Ungrab mouse if requested
 	possibly_ungrab_mouse();
+	
+	// Don't render to screen if it is locked
+	if (lock_screen) {
+		return;
+	}
 
 	// Update display (static variant)
 	static int tick_counter = 0;
