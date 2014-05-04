@@ -224,8 +224,8 @@ user_string_def common_strings[] = {
 	{STR_JIT_LAZY_CINV_CTRL, "Enable lazy invalidation of translation cache"},
 	{STR_JIT_FOLLOW_CONST_JUMPS, "Translate through constant jumps (inline blocks)"},
 
-	{STR_WINDOW_TITLE, "Basilisk II"},
-	{STR_WINDOW_TITLE_FROZEN, "Basilisk II *** FROZEN ***"},
+	{STR_WINDOW_TITLE, "Asterax"},
+	{STR_WINDOW_TITLE_FROZEN, "Asterax *** FROZEN ***"},
 	{STR_WINDOW_MENU, "Basilisk II"},
 	{STR_WINDOW_ITEM_ABOUT, "About Basilisk II" ELLIPSIS},
 	{STR_WINDOW_ITEM_REFRESH, "Refresh Rate"},
