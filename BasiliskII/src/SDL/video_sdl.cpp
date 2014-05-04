@@ -978,6 +978,31 @@ driver_fullscreen::~driver_fullscreen()
  */
 
 bool lock_screen = true;
+static bool lock_screen_shown = false;
+
+static void video_display_black(void)
+{
+	const VIDEO_MODE &mode = drv->mode;
+	
+	// Lock surface, if required
+	if (SDL_MUSTLOCK(drv->s))
+		SDL_LockSurface(drv->s);
+	
+	// Determine pixel value closest to black
+	// NOTE: I'd normally expect (0,0,0) to be black,
+	//       but only (255,255,255) seems to work here.
+	uint32 black_pixel = SDL_MapRGB(drv->s->format, 255, 255, 255);
+
+	// Blit to screen surface
+	memset(drv->s->pixels, black_pixel, VIDEO_MODE_ROW_BYTES * VIDEO_MODE_Y);
+
+	// Unlock surface, if required
+	if (SDL_MUSTLOCK(drv->s))
+		SDL_UnlockSurface(drv->s);
+
+	// Refresh display
+	SDL_UpdateRect(drv->s, 0, 0, VIDEO_MODE_X, VIDEO_MODE_Y);
+}
 
 
 /*
@@ -1474,6 +1499,9 @@ void SDL_monitor_desc::set_palette(uint8 *pal, int num_in)
 
 	// Tell redraw thread to change palette
 	sdl_palette_changed = true;
+	
+	// Redraw lock screen
+	lock_screen_shown = false;
 
 	UNLOCK_PALETTE;
 }
@@ -2224,6 +2252,10 @@ static void video_refresh_window_static(void)
 	
 	// Don't render to screen if it is locked
 	if (lock_screen) {
+		if (!lock_screen_shown) {
+			video_display_black();
+			lock_screen_shown = true;
+		}
 		return;
 	}
 
